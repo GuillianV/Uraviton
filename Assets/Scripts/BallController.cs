@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
@@ -10,7 +11,8 @@ public class BallController : MonoBehaviour
 {
     // Start is called before the first frame update
     public float speed = 1;
-
+    
+    
     private Rigidbody _rigidbody;
     private SphereCollider _sphereCollider;
     private PlayerMovement _playerMovement;
@@ -25,25 +27,12 @@ public class BallController : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _sphereCollider = GetComponent<SphereCollider>();
         _camera = Camera.main;
+        
     }
 
-    public void DeltaMovementHandler(Vector2 absoluteDeltaMovement)
+    public void DeltaMovementHandler(Vector2 relativeDeltaMovement)
     {
-        _absoluteDeltaMovement = absoluteDeltaMovement;
-        float theta = _camera.transform.eulerAngles.y;
-        Vector2 initialVector = _absoluteDeltaMovement; // vecteur initial à faire pivoter
-
-        float thetaRad = Mathf.Deg2Rad * ( theta + 180); // conversion degrés vers radians
-        float cosTheta = Mathf.Cos(thetaRad);
-        float sinTheta = Mathf.Sin(thetaRad);
-
-// Application de la formule de rotation
-        float xPrime = initialVector.x * cosTheta - initialVector.y * sinTheta;
-        float yPrime = initialVector.x * sinTheta + initialVector.y * cosTheta;
-
-     
-        _deltaMovement = new Vector2(xPrime,yPrime ).normalized;
-
+        _deltaMovement = relativeDeltaMovement;
 
     }
 
