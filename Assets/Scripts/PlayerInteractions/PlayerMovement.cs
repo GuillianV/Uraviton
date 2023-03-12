@@ -10,11 +10,13 @@ public class PlayerMovement : MonoBehaviour
 {
     private PlayerInput _playerInput;
     private bool _isLeftClicked = false;
-    public UnityEvent<Vector2> movementEvent;
-    
+    public UnityEvent<Vector2> absoluteDeltaMovementEvent;
+
+    private Camera _camera;
     // Start is called before the first frame update
     void Start()
     {
+        _camera =Camera.main;
         Application.targetFrameRate = 120;
         _playerInput = GetComponent<PlayerInput>();
         #if UNITY_EDITOR
@@ -26,10 +28,6 @@ public class PlayerMovement : MonoBehaviour
         _playerInput.ActivateInput();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
 
 
     public void OnMove(InputValue input)
@@ -40,10 +38,10 @@ public class PlayerMovement : MonoBehaviour
         #if UNITY_EDITOR
         if (_isLeftClicked)
         {
-            movementEvent.Invoke(inputVec);
+            absoluteDeltaMovementEvent.Invoke(inputVec);
         }
         #else
-        movementEvent.Invoke(inputVec);
+        movementEvent.Invoke(mov);
         #endif
         
     }
